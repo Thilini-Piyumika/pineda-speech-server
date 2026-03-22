@@ -11,12 +11,12 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-// ✅ TEST
+// TEST
 app.get("/", (req, res) => {
   res.send("Server OK");
 });
 
-// 🎤 AUDIO ROUTE
+// AUDIO API
 app.post("/upload", express.raw({ type: "*/*", limit: "10mb" }), async (req, res) => {
 
   const filePath = path.join(__dirname, "audio.wav");
@@ -32,8 +32,7 @@ app.post("/upload", express.raw({ type: "*/*", limit: "10mb" }), async (req, res
     const spoken = (transcription.text || "").toLowerCase();
     console.log("Spoken:", spoken);
 
-    const expected = "b";
-
+    // 🔥 ONLY B FOR DEMO
     const valid = ["b", "bee", "be"];
 
     let result = "wrong";
@@ -41,11 +40,9 @@ app.post("/upload", express.raw({ type: "*/*", limit: "10mb" }), async (req, res
     for (let word of valid) {
       if (spoken.includes(word)) {
         result = "correct";
-        break;
       }
     }
 
-    // ✅ SEND JSON BACK
     res.json({
       result: result,
       spoken: spoken
@@ -60,7 +57,4 @@ app.post("/upload", express.raw({ type: "*/*", limit: "10mb" }), async (req, res
 });
 
 const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log("Server running");
-});
+app.listen(PORT, () => console.log("Server running"));
